@@ -3,15 +3,15 @@ import game from "./game";
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: "postgres",
-  ssl: true,
+  // ssl: true,
   protocol: "postgres",
 
   logging: true,
   dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
+    // ssl: {
+    //   require: true,
+    //   rejectUnauthorized: false,
+    // },
   },
 });
 
