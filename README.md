@@ -33,4 +33,26 @@ _Note: If you run the app locally you will only be able to play on your local ar
 **2. Run the client**
 
 1.  From your terminal `cd` into the client directory and run `npm install`.
-2.  From your terminal run `npm start`.
+2.  From your terminal run `REACT_APP_SERVER_URL=localhost:9000 npm start`.
+
+## To implement
+
+- Run postgresql, create db, backend and frontend on docker & expose ports for backend and frontend
+
+
+# CONTAINERIZED ver
+
+1. Build using docker compose:
+```bash
+docker compose -f server-compose.yml build
+```
+2. Start the stack (adminer, db and server)
+```
+docker compose -f server-compose up -d
+```
+3. Clients available:
+```
+http://localhost:3000
+http://localhost:3001
+```
+

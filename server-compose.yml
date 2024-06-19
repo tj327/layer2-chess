@@ -1,0 +1,83 @@
+---
+services:
+  db:
+    image: postgres:14.12-alpine3.20
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: chess
+    networks:
+      chessnet:
+        ipv4_address: 10.1.0.2
+    hostname: db.local
+    healthcheck:
+      test: "pg_isready"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      chessnet:
+        ipv4_address: 10.1.0.3
+    hostname: adminer.local
+
+  server:
+    depends_on:
+      db:
+        condition: service_healthy
+    build:
+      context: ./
+      dockerfile: server.Dockerfile
+    restart: always
+    networks:
+      chessnet:
+        ipv4_address: 10.1.0.4
+    hostname: server.local
+    ports:
+      - "9000:9000"
+
+  client1:
+    depends_on:
+      - server
+    build:
+      context: ./
+      dockerfile: client.Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      chessnet:
+        ipv4_address: 10.1.0.5
+    tty: true
+
+  client2:
+    depends_on:
+      - server
+    build:
+      context: ./
+      dockerfile: client.Dockerfile
+    restart: always
+    ports:
+      - "3001:3000"
+    networks:
+      chessnet:
+        ipv4_address: 10.1.0.6
+    tty: true
+
+networks:
+  chessnet:
+    name: chessnet
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.1.0.0/16
+          gateway: 10.1.0.1
