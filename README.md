@@ -38,3 +38,30 @@ _Note: If you run the app locally you will only be able to play on your local ar
 ## To implement
 
 - Run postgresql, create db, backend and frontend on docker & expose ports for backend and frontend
+
+
+# CONTAINERIZED ver
+
+1. Build using docker compose:
+```bash
+docker compose -f server-compose.yml build
+```
+2. Start the stack (adminer, db and server)
+```
+docker compose -f server-compose up -d
+```
+3. Build client (inside dir with client.Dockerfile)
+```bash
+docker build -f client.Dockerfile -t client:v0.0.1 . 
+```
+4. Launch client #1
+```
+docker run -p 3000:3000 -it client:v.0.0.1
+```
+5. Launch client #2
+```
+docker run -p 3001:3000 -it client:v.0.0.1
+```
+6. Access the web ui through http://localhost:3000 and http://localhost:3001
+
+
