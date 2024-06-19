@@ -50,18 +50,9 @@ docker compose -f server-compose.yml build
 ```
 docker compose -f server-compose up -d
 ```
-3. Build client (inside dir with client.Dockerfile)
-```bash
-docker build -f client.Dockerfile -t client:v0.0.1 . 
+3. Clients available:
 ```
-4. Launch client #1
+http://localhost:3000
+http://localhost:3001
 ```
-docker run -p 3000:3000 -it client:v.0.0.1
-```
-5. Launch client #2
-```
-docker run -p 3001:3000 -it client:v.0.0.1
-```
-6. Access the web ui through http://localhost:3000 and http://localhost:3001
-
 

@@ -23,7 +23,11 @@ services:
     image: adminer
     restart: always
     ports:
-      - 9000:8080
+      - 8080:8080
+    networks:
+      chessnet:
+        ipv4_address: 10.1.0.3
+    hostname: adminer.local
 
   server:
     depends_on:
@@ -33,19 +37,40 @@ services:
       context: ./
       dockerfile: server.Dockerfile
     restart: always
-      #    environment:
-      #      PORT: "9090"
-      #      DATABASE_URL: "postgres://admin:example@db.local:5432/chess"
     networks:
       chessnet:
-        ipv4_address: 10.1.0.3
-    hostname: l2chess.local
-      #  client:
-      #    build:
-      #      context: ./
-      #      dockerfile: client.Dockerfile
-      #    ports:
-      #      - "3000:3000"
+        ipv4_address: 10.1.0.4
+    hostname: server.local
+    ports:
+      - "9000:9000"
+
+  client1:
+    depends_on:
+      - server
+    build:
+      context: ./
+      dockerfile: client.Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      chessnet:
+        ipv4_address: 10.1.0.5
+    tty: true
+
+  client2:
+    depends_on:
+      - server
+    build:
+      context: ./
+      dockerfile: client.Dockerfile
+    restart: always
+    ports:
+      - "3001:3000"
+    networks:
+      chessnet:
+        ipv4_address: 10.1.0.6
+    tty: true
 
 networks:
   chessnet:
